@@ -1,0 +1,28 @@
+<!-- Include the Socket.IO client library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+<!-- Add a button -->
+<button id="sendUserDetails">Send User Details</button>
+<script>
+  // Connect to the Socket.IO server
+  const socket = io('https://ws.whatsgenie.com/api/live-chat');
+
+  // Listen for the 'connect' event
+  socket.on('connect', () => {
+    console.log(`Connected to the server with id ${socket.id}`);
+  });
+
+  // Listen for the 'disconnect' event
+  socket.on('disconnect', () => {
+    console.log('Disconnected from the server');
+  });
+
+  // Add an event listener to the button
+  document.getElementById('sendUserDetails').addEventListener('click', () => {
+    // Emit the 'userDetails' event with userDetails as a JSON object
+    let userDetails = {
+      phoneNumber: '1234567890',
+      name: 'John Doe'
+    };
+    socket.emit('userDetails', userDetails);
+  });
+</script>
