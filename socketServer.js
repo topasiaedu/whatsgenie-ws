@@ -7,8 +7,7 @@ module.exports = (server) => {
     path: '/api/live-chat',
     cors: {
       origin: "*", // Allow all origins
-      methods: ["GET", "POST"],
-      credentials: true
+      methods: ["GET", "POST"]
     }
   });
   
