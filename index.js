@@ -28,6 +28,11 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Return a json when the user hits the root route
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to the Socket.io server" });
+});
+
 // Start the server
 const server = app.listen(port, async () => {
   console.log(`Server running on port ${port}`);
