@@ -1,0 +1,929 @@
+<style>
+  :root {
+    font-family: "Poppins", sans-serif;
+    font-size: 24px;
+  }
+  /* Mobile responsive for root */
+  @media (max-width: 768px) {
+    :root {
+      font-size: 12px;
+    }
+    .nm-outer-container {
+      padding: 0;
+    }
+    h2 {
+      font-size: 1.25rem;
+    }
+  }
+  /* Progress bar styles */
+  #progress {
+    list-style-type: none;
+    counter-reset: step;
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap to the next line if they overflow */
+    justify-content: space-between;
+    padding-bottom: 30px;
+    gap: 10px;
+    padding-left: 0;
+  }
+  #progress li {
+    width: 50px;
+    height: 50px;
+    background: #ddd;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 50px;
+    color: white;
+    font-weight: bold;
+  }
+  #progress li.active {
+    background: #ff7300;
+  }
+  /* Form styles */
+  .nm-container {
+    max-width: 1000px;
+    width: 80vw;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 0px 10px #aaa;
+  }
+  .nm-outer-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    box-sizing: border-box;
+  }
+  .form-group {
+    margin-bottom: 15px;
+  }
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  button {
+    padding: 20px 30px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ff7300;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #ff7300;
+  }
+  .step {
+    display: none;
+  }
+  .step.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  label {
+    font-size: 2rem;
+    text-align: center;
+  }
+  .radio-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+  }
+  .radio-button {
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    padding: 10px 20px;
+    flex-grow: 1;
+  }
+  .radio-button label {
+    padding: 10px 20px;
+    font-size: 1.5rem;
+  }
+  .form-group label {
+    font-size: 1rem;
+  }
+  #results {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 20px;
+  }
+  /* Styling for the popup container */
+  .popup-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+  }
+  /* Styling for the popup box */
+  .popup-box {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 1500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: scroll;
+  }
+  /* Styling for the input fields */
+  .popup-input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+  }
+  #notThanks {
+    background-color: transparent;
+    color: grey;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .text-center {
+    text-align: center;
+  }
+  p {
+    font-size: 1rem;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+  .list-group-item strong {
+    font-size: 1.25rem;
+  }
+  #submitInfo {
+    padding: 10px 31vw;
+    margin-top: 2rem;
+  }
+  /* Default image size for smaller screens */
+  .popup-box img {
+    max-width: 80vw;
+    width: auto;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+  /* Media query for larger screens */
+  @media (min-width: 768px) {
+    .popup-box img {
+      max-width: 30vw; /* Change the width for larger screens */
+    }
+  }
+  .previous-btn {
+    background-color: #ddd;
+  }
+  input {
+    font-size: 1rem;
+  }
+</style>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+<div class="nm-outer-container">
+  <ol id="progress">
+    <!-- home icon -->
+    <li class="active">
+      <i class="fas fa-home" style="font-size: smaller"></i>
+    </li>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+    <li>5</li>
+    <li>6</li>
+    <li>7</li>
+    <li>8</li>
+    <li>9</li>
+  </ol>
+  <div class="nm-container">
+    <form>
+      <div class="step step-0 active">
+        <!-- Step 0 fields go here -->
+        <input
+          type="text"
+          id="nameInput"
+          class="popup-input"
+          placeholder="请输入您的姓名"
+          required />
+        <input
+          type="number"
+          id="phoneInput"
+          class="popup-input"
+          placeholder="请输入您的电话号码"
+          required />
+        <div class="buttons">
+          <button type="button" class="next-btn" id="start-quiz-btn">
+            开始测验 <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+        <p>提交即表示您授权我们通过 Whatsapp 或短信与您联系，了解 Clinixero 最新新闻和研讨会。您可以随时选择退出。</p>
+      </div>
+      <div class="step step-1">
+        <!-- Step 1 fields go here -->
+        <label>1) 2型糖尿病是家族遗传的。 </label>
+        <div class="radio-buttons">
+          <div class="radio-button">
+            <input
+              type="radio"
+              id="q1-option1"
+              name="question1"
+              value="0"
+              class="form-check-input" />
+            <label for="q1-option1">正确</label>
+          </div>
+          <div class="radio-button">
+            <input
+              type="radio"
+              id="q1-option2"
+              name="question1"
+              value="1"
+              class="form-check-input" />
+            <label for="q1-option2">错误</label><br />
+          </div>
+        </div>
+        <div class="buttons">
+          <button type="button" class="next-btn">下一个</button>
+        </div>
+      </div>
+      <div class="step step-2">
+        <!-- Step 2 fields go here -->
+        <label>2) 只有超重或肥胖的人才会患上2型糖尿病。 </label>
+        <div class="radio-buttons">
+          <div class="radio-button">
+            <input
+              type="radio"
+              id="q2-option1"
+              name="question2"
+              value="0"
+              class="form-check-input" />
+            <label for="q2-option1">正确</label>
+          </div>
+          <div class="radio-button">
+            <input
+              type="radio"
+              id="q2-option2"
+              name="question2"
+              value="1"
+              class="form-check-input" />
+            <label for="q2-option2">错误</label><br />
+          </div>
+        </div>
+        <div class="buttons">
+          <button type="button" class="previous-btn">上一个</button>
+          <button type="button" class="next-btn">下一个</button>
+        </div>
+      </div>
+      <div class="step step-3">
+        <!-- Step 3 fields go here -->
+        <label> 3) 药物、胰岛素和保健品可以完全预防并发症的发生。 </label>
+        <div class="radio-buttons">
+          <div class="radio-button">
+            <input
+              type="radio"
+              id="q3-option1"
+              name="question3"
+              value="0"
+              class="form-check-input" />
+            <label for="q3-option1">正确</label>
+          </div>
+          <div class="radio-button">
+            <input
+              type="radio"
+              id="q3-option2"
+              name="question3"
+              value="1"
+              class="form-check-input" />
+            <label for="q3-option2">错误</label><br />
+          </div>
+        </div>
+        <div class="buttons">
+          <button type="button" class="previous-btn">上一个</button>
+          <button type="button" class="next-btn">下一个</button>
+        </div>
+      </div>
+      <div class="step step-4">
+        <!-- Step 4 fields go here -->
+        <label> 4) 2型糖尿病只影响老年人。</label>
+        <div class="radio-buttons">
+          <div class="radio-button">
+            <input
+              type="radio"
+              id="q4-option1"
+              name="question4"
+              value="0"
+              class="form-check-input" />
+            <label for="q4-option1">正确</label>
+          </div>
+          <div class="radio-button">
+            <input
+              type="radio"
+              id="q4-option2"
+              name="question4"
+              value="1"
+              class="form-check-input" />
+            <label for="q4-option2">错误</label><br />
+          </div>
+        </div>
+        <div class="buttons">
+          <button type="button" class="previous-btn">上一个</button>
+          <button type="button" class="next-btn">下一个</button>
+        </div>
+      </div>
+      <div class="step step-5">
+        <!-- Step 5 fields go here -->
+        <label> 5) 糖尿病的主要原因是摄入过多的糖。 </label>
+        <div class="radio-buttons">
+          <div class="radio-button">
+            <input
+              type="radio"
+              id="q5-option1"
+              name="question5"
+              value="0"
+              class="form-check-input" />
+            <label for="q5-option1">正确</label>
+          </div>
+          <div class="radio-button">
+            <input
+              type="radio"
+              id="q5-option2"
+              name="question5"
+              value="1"
+              class="form-check-input" />
+            <label for="q5-option2">错误</label><br />
+          </div>
+        </div>
+        <div class="buttons">
+          <button type="button" class="previous-btn">上一个</button>
+          <button type="button" class="next-btn">下一个</button>
+        </div>
+      </div>
+      <div class="step step-6">
+        <!-- Step 6 fields go here -->
+        <label>6) 高血压、胆固醇、肥胖和糖尿病是相互关联的病状 </label>
+        <div class="radio-buttons">
+          <div class="radio-button">
+            <input
+              type="radio"
+              id="q6-option1"
+              name="question6"
+              value="1"
+              class="form-check-input" />
+            <label for="q6-option1">正确</label>
+          </div>
+          <div class="radio-button">
+            <input
+              type="radio"
+              id="q6-option2"
+              name="question6"
+              value="0"
+              class="form-check-input" />
+            <label for="q6-option2">错误</label><br />
+          </div>
+        </div>
+        <div class="buttons">
+          <button type="button" class="previous-btn">上一个</button>
+          <button type="button" class="next-btn">下一个</button>
+        </div>
+      </div>
+      <div class="step step-7">
+        <!-- Step 7 fields go here -->
+        <label>7) 糖尿病的并发症可能会突然发作，没有任何警告。 </label>
+        <div class="radio-buttons">
+          <div class="radio-button">
+            <input
+              type="radio"
+              id="q7-option1"
+              name="question7"
+              value="1"
+              class="form-check-input" />
+            <label for="q7-option1">正确</label>
+          </div>
+          <div class="radio-button">
+            <input
+              type="radio"
+              id="q7-option2"
+              name="question7"
+              value="0"
+              class="form-check-input" />
+            <label for="q7-option2">错误</label><br />
+          </div>
+        </div>
+        <div class="buttons">
+          <button type="button" class="previous-btn">上一个</button>
+          <button type="button" class="next-btn">下一个</button>
+        </div>
+      </div>
+      <div class="step step-8">
+        <!-- Step 8 fields go here -->
+        <label>8) 2型糖尿病是可以逆转的。 </label>
+        <div class="radio-buttons">
+          <div class="radio-button">
+            <input
+              type="radio"
+              id="q8-option1"
+              name="question8"
+              value="1"
+              class="form-check-input" />
+            <label for="q8-option1">正确</label>
+          </div>
+          <div class="radio-button">
+            <input
+              type="radio"
+              id="q8-option2"
+              name="question8"
+              value="0"
+              class="form-check-input" />
+            <label for="q8-option2">错误</label><br />
+          </div>
+        </div>
+        <div class="buttons">
+          <button type="button" class="previous-btn">上一个</button>
+          <button type="button" class="next-btn" id="calculate-score-btn">
+            下一个
+          </button>
+        </div>
+      </div>
+      <div class="step step-9">
+        <!-- Step 10 fields go here -->
+        <h1>你的分数是 <span id="score">0</span>/8</h1>
+        <div id="results"></div>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <strong>1) 2型糖尿病是家族遗传的。 </strong>
+            <p>
+              错误：不要陷入这个误区。虽然家族史可能是一个风险因素，但实际上2型糖尿病更多地与个人的生活方式和环境有关。
+              预防是最佳策略，不论您的家族史是如何。
+            </p>
+          </li>
+          <li class="list-group-item">
+            <strong>2) 只有超重或肥胖的人才会患上2型糖尿病。 </strong>
+            <p>
+              错误：这是一个常见的误解。即使您体重正常，也可能患上2型糖尿病。
+              无论体重如何，采取积极的生活方式和定期监测是关键。
+            </p>
+          </li>
+          <li class="list-group-item">
+            <strong>3) 药物、胰岛素和保健品可以完全预防并发症的发生。 </strong>
+            <p>
+              错误：不要寄希望于这些，因为目前没有证据表明它们可以100%预防并发症。
+              行动才是关键，包括健康的饮食和定期检查。
+            </p>
+          </li>
+          <li class="list-group-item">
+            <strong>4) 2型糖尿病只影响老年人。 </strong>
+            <p>
+              错误：这是一个常见的误解。2型糖尿病不仅影响老年人，年轻人甚至儿童也可能患上糖尿病。
+              事实上，2型糖尿病在年轻人中的发病率正在上升，这与不健康的生活方式和饮食习惯有关
+            </p>
+          </li>
+          <li class="list-group-item">
+            <strong>5) 糖尿病的主要原因是摄入过多的糖。 </strong>
+            <p>
+              错误：虽然糖的摄入是一个风险因素，但不要忽视其他因素。
+              生活方式和环境同样重要，需要综合考虑。
+            </p>
+          </li>
+          <li class="list-group-item">
+            <strong>6) 高血压、胆固醇、肥胖和糖尿病是相互关联的病状。 </strong>
+            <p>
+              正确：您说对了！这些病状通常是相互关联的，构成了"代谢综合症"。
+              关注这些方面对于预防糖尿病至关重要。
+            </p>
+          </li>
+          <li class="list-group-item">
+            <strong>7) 糖尿病的并发症可能会突然发作，没有任何警告。 </strong>
+            <p>
+              正确：在某些情况下，糖尿病的并发症确实可能突然发作，没有任何警告。
+              某些急性并发症可能会突然出现，如果不立即处理，可能会危及生命。
+            </p>
+          </li>
+          <li class="list-group-item">
+            <strong>8) 2型糖尿病是可以逆转的。 </strong>
+            <p>
+              正确：绝对正确！通过停止不必要的药物治疗，调整生活方式和饮食，您可以实现糖尿病的逆转。
+              Clinixero自2017年以来已经帮助超过1000多位患者成功逆转他们的糖尿病。不要犹豫，逆袭糖尿病！正确：确实可以逆转。通过停止
+              有害的
+              药物治疗和某些生活方式的改变。实际上，要成功地逆转糖尿病，您需要寻找一个糖尿病逆转专家。Clinixero自2017年以来已经帮助超过1000多位病人成功逆转了他们的糖尿病。
+            </p>
+          </li>
+        </ul>
+        <h3 class="text-center">你兑换了免费的现场研讨会门票了吗?</h3>
+        <!-- CTA Button -->
+        <button type="button" class="" onclick="addRowToGoogleSheet3()">
+          点击这里领取免费位置
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- The popup container -->
+<div class="popup-container" id="popupContainer">
+  <!-- The popup box -->
+  <div class="popup-box">
+    <h2 style="margin-top: 1rem">战胜糖尿病：加入我们的【糖尿病逆袭研讨会】</h2>
+    <!-- <img
+      src="https://images.clickfunnels.com/69/bbe0bb5ef44366823eda92ca3f4727/Doctors-cx-cover-7.png"
+      alt=""
+      style="margin-bottom: 1rem" /> -->
+    <p>
+      3小时帮助您如何自然和安全地降低血糖，不用终身吃药，走上健康和幸福的道路！
+    </p>
+    <div
+      style="display: flex; flex-direction: column"
+      onclick="addRowToGoogleSheet3()">
+      <button id="submitInfo">立即点击报名</button>
+      <!-- not thanks button -->
+      <button id="notThanks">暂时不想</button>
+    </div>
+  </div>
+</div>
+<script>
+  // JavaScript to show and hide the popup
+  const showPopupButton = document.getElementById("showPopup");
+  const popupContainer = document.getElementById("popupContainer");
+  const nameInput = document.getElementById("nameInput");
+  const phoneInput = document.getElementById("phoneInput");
+  const submitInfoButton = document.getElementById("submitInfo");
+  const notThanksButton = document.getElementById("notThanks");
+  // showPopupButton.addEventListener("click", () => {
+  //   popupContainer.style.display = "flex"; // Display the popup container
+  // });
+  // popupContainer.style.display = "flex"; // Display the popup container
+  popupContainer.addEventListener("click", (event) => {
+    if (event.target === popupContainer) {
+      popupContainer.style.display = "none"; // Hide the popup container when clicking outside the box
+    }
+  });
+  notThanksButton.addEventListener("click", () => {
+    popupContainer.style.display = "none"; // Hide the popup container
+  });
+  submitInfoButton.addEventListener("click", () => {
+    // check if name and phone are empty
+    if (nameInput.value === "" || phoneInput.value === "") {
+      alert("请填写您的姓名和电话号码");
+      return;
+    }
+    addRowToGoogleSheet();
+    // Open a new blank tab immediately
+    const newTab = window.open("about:blank", "_blank");
+    setTimeout(function () {
+      // Change the location of the new tab after the timeout
+      newTab.location =
+        "https://reeve.clickfunnels.com/webinar-confirmationqupjat0s";
+      popupContainer.style.display = "none"; // Hide the popup container when clicking outside the box
+    }, 1000);
+  });
+</script>
+<script>
+  var steps = Array.from(document.querySelectorAll(".step"));
+  var nextBtns = Array.from(document.querySelectorAll(".next-btn"));
+  var prevBtns = Array.from(document.querySelectorAll(".previous-btn"));
+  var progress = Array.from(document.querySelectorAll("#progress li"));
+  nextBtns.forEach(function (btn, idx) {
+    btn.addEventListener("click", function () {
+      // Prevent the default button click behavior
+      event.preventDefault();
+      // Check if any required fields are empty in the current step
+      if (!areFieldsFilled()) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+      steps[idx].classList.remove("active");
+      steps[idx + 1].classList.add("active");
+      progress[idx].classList.remove("active");
+      progress[idx + 1].classList.add("active");
+    });
+  });
+  prevBtns.forEach(function (btn, idx) {
+    btn.addEventListener("click", function () {
+      steps[idx + 2].classList.remove("active");
+      steps[idx + 1].classList.add("active");
+      progress[idx + 2].classList.remove("active");
+      progress[idx + 1].classList.add("active");
+    });
+  });
+  function areFieldsFilled() {
+    // Get the current active step
+    let activeStep = document.querySelector(".step.active");
+    // Get all input fields within the active step
+    let inputFields = activeStep.querySelectorAll("input");
+    // Iterate over each input field
+    for (let i = 0; i < inputFields.length; i++) {
+      let field = inputFields[i];
+      // Check if the field is a checkbox or radio button
+      if (field.type === "checkbox" || field.type === "radio") {
+        // If it is, check if any checkbox or radio button with the same name is checked
+        let name = field.name;
+        let isChecked = document.querySelector(`input[name="${name}"]:checked`);
+        // If no checkbox or radio button with the same name is checked, return false
+        if (!isChecked) {
+          return false;
+        }
+      } else {
+        // If the field is not a checkbox or radio button, check if it has a value
+        if (!field.value) {
+          return false;
+        }
+      }
+    }
+    // If all fields have a value, return true
+    return true;
+  }
+</script>
+<script>
+  // Function to calculate the user's score
+  function calculateScore() {
+    let totalScore = 0;
+    // Iterate through all the questions
+    for (let i = 1; i <= 8; i++) {
+      // Assuming you have 5 questions, adjust as needed
+      const questionName = `question${i}`;
+      const selectedOption = document.querySelector(
+        `input[name=${questionName}]:checked`
+      );
+      let selectedOptionValue = 0;
+      if (selectedOption) {
+        selectedOptionValue = selectedOption.value;
+      }
+      console.log("selectedOptionValue: ", selectedOptionValue);
+      totalScore += parseInt(selectedOptionValue);
+    }
+    // Update the score in the HTML
+    document.getElementById("score").textContent = totalScore;
+    showResults();
+    addRowToGoogleSheet2();
+    // Display the popup after 1 minute
+    setTimeout(function () {
+      popupContainer.style.display = "flex"; // Display the popup container
+    }, 20000);
+  }
+  // Add an event listener to the "Calculate Score" button
+  document
+    .getElementById("calculate-score-btn")
+    .addEventListener("click", calculateScore);
+</script>
+<script>
+  function showResults() {
+    const resultscontainer = document.getElementById("results");
+    resultscontainer.innerHTML = ""; // Clear previous results
+    // Iterate through all the questions and check user's answers
+    for (let i = 1; i <= 8; i++) {
+      // Assuming you have 8 questions, adjust as needed
+      const questionName = `question${i}`;
+      const selectedOption = document.querySelector(
+        `input[name=${questionName}]:checked`
+      );
+      let selectedOptionValue = 0;
+      if (selectedOption) {
+        selectedOptionValue = selectedOption.value;
+      }
+      const result = document.createElement("p");
+      if (selectedOptionValue == 1) {
+        result.textContent = `问题 ${i}: ✅`;
+        result.style.color = "green"; // Change text color to green for correct answers
+        result.style.fontWeight = "bold";
+      } else {
+        result.textContent = `问题 ${i}: ❌`;
+        result.style.color = "red"; // Change text color to red for wrong answers
+        result.style.fontWeight = "bold";
+      }
+      resultscontainer.appendChild(result);
+    }
+  }
+</script>
+<script>
+  function addRowToGoogleSheet() {
+    // Get all data from the form
+    const name = document.getElementById("nameInput").value;
+    const phone = document.getElementById("phoneInput").value;
+    const time = new Date().toLocaleString("en-MY", {
+      timeZone: "Asia/Kuala_Lumpur",
+    });
+    // Prepare the payload with the data from the form
+    var payload = {
+      values: [name, phone],
+      spreadsheet_id: "1Yi-aKw9nIPilmm1raVCgyvp_s47Nm79nlMSyhYMC-0A", // Replace with your actual sheet_id
+      sheet_name: "Leads-Quiz", // Replace with the name of the sheet where you want to insert the data
+    };
+    // Send a POST request to insert the data into the Google Sheet
+    fetch("https://nmstagingapi.whatsgenie.com/add_row", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => {
+        // Check if the response has a valid JSON content-type header
+        if (
+          response.ok &&
+          response.headers.get("Content-Type").includes("application/json")
+        ) {
+          // Parse the response body as JSON
+          return response.json();
+        } else {
+          // Handle non-JSON response or errors
+          throw new Error("Invalid response or non-JSON content");
+        }
+      })
+      .then((data) => {
+        // Process the JSON data from the response
+        console.log(data); // The parsed JSON data
+        // You can do additional processing with the data here
+      })
+      .catch((error) => {
+        console.error("Error handling the response:", error);
+      });
+  }
+</script>
+<script>
+  function addRowToGoogleSheet2() {
+    // Get all data from the form
+    const name = localStorage.getItem("garlic:clinixero.co*>input.name");
+    const phone = localStorage.getItem("garlic:clinixero.co*>input.phone");
+    // Prepare the payload with the data from the form
+    var payload = {
+      values: [name, phone],
+      spreadsheet_id: "11pT0WuEFsPKbibUKtKBRuLUnDZIzqx02_MF8qr6l97g", // Replace with your actual sheet_id
+      sheet_name: "CN Finish Quiz", // Replace with the name of the sheet where you want to insert the data
+    };
+    // Send a POST request to insert the data into the Google Sheet
+    fetch("https://nmstagingapi.whatsgenie.com/add_row", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => {
+        // Check if the response has a valid JSON content-type header
+        if (
+          response.ok &&
+          response.headers.get("Content-Type").includes("application/json")
+        ) {
+          // Parse the response body as JSON
+          return response.json();
+        } else {
+          // Handle non-JSON response or errors
+          throw new Error("Invalid response or non-JSON content");
+        }
+      })
+      .then((data) => {
+        // Process the JSON data from the response
+        console.log(data); // The parsed JSON data
+        // You can do additional processing with the data here
+      })
+      .catch((error) => {
+        console.error("Error handling the response:", error);
+      });
+  }
+</script>
+<script>
+  function addRowToGoogleSheet3() {
+    // Get all data from the form
+    const name = localStorage.getItem("garlic:clinixero.co*>input.name");
+    const phone = localStorage.getItem("garlic:clinixero.co*>input.phone");
+    // Prepare the payload with the data from the form
+    var payload = {
+      values: [name, phone],
+      spreadsheet_id: "11pT0WuEFsPKbibUKtKBRuLUnDZIzqx02_MF8qr6l97g", // Replace with your actual sheet_id
+      sheet_name: "CN Signed Up", // Replace with the name of the sheet where you want to insert the data
+    };
+    // Send a POST request to insert the data into the Google Sheet
+    fetch("https://nmstagingapi.whatsgenie.com/add_row", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => {
+        // Check if the response has a valid JSON content-type header
+        if (
+          response.ok &&
+          response.headers.get("Content-Type").includes("application/json")
+        ) {
+          // Parse the response body as JSON
+          return response.json();
+        } else {
+          // Handle non-JSON response or errors
+          throw new Error("Invalid response or non-JSON content");
+        }
+      })
+      .then((data) => {
+        // Process the JSON data from the response
+        console.log(data); // The parsed JSON data
+        // You can do additional processing with the data here
+        window.location.replace(
+          "https://clinixero.co/webinar-confirmation-cnahrn6rus"
+        );
+      })
+      .catch((error) => {
+        console.error("Error handling the response:", error);
+      });
+  }
+</script>
+<script>
+  function addRowToGoogleSheet4() {
+    // Get all data from the form
+    const name = localStorage.getItem("garlic:clinixero.co*>input.name");
+    const phone = localStorage.getItem("garlic:clinixero.co*>input.phone");
+    // Prepare the payload with the data from the form
+    var payload = {
+      values: [name, phone],
+      spreadsheet_id: "11pT0WuEFsPKbibUKtKBRuLUnDZIzqx02_MF8qr6l97g", // Replace with your actual sheet_id
+      sheet_name: "CN Start Quiz", // Replace with the name of the sheet where you want to insert the data
+    };
+    // Send a POST request to insert the data into the Google Sheet
+    fetch("https://nmstagingapi.whatsgenie.com/add_row", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => {
+        // Check if the response has a valid JSON content-type header
+        if (
+          response.ok &&
+          response.headers.get("Content-Type").includes("application/json")
+        ) {
+          // Parse the response body as JSON
+          return response.json();
+        } else {
+          // Handle non-JSON response or errors
+          throw new Error("Invalid response or non-JSON content");
+        }
+      })
+      .then((data) => {
+        // Process the JSON data from the response
+        console.log(data); // The parsed JSON data
+        // You can do additional processing with the data here
+      })
+      .catch((error) => {
+        console.error("Error handling the response:", error);
+      });
+  }
+  // Add event listener to the "Start Quiz" button to add the data to localStorage
+  document.getElementById("start-quiz-btn").addEventListener("click", () => {
+    localStorage.setItem(
+      "garlic:clinixero.co*>input.name",
+      document.getElementById("nameInput").value
+    );
+    localStorage.setItem(
+      "garlic:clinixero.co*>input.phone",
+      document.getElementById("phoneInput").value
+    );
+    addRowToGoogleSheet4();
+  });
+</script>
+
+<!-- Include the Socket.IO client library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+<!-- Add a button -->
+<script>
+  // Connect to the Socket.IO server
+  const socket = io('http://ws.whatsgenie.com/api/live-chat');
+
+  // Listen for the 'connect' event
+  socket.on('connect', () => {
+    console.log(`Connected to the server with id ${socket.id}`);
+  });
+
+  // Listen for the 'disconnect' event
+  socket.on('disconnect', () => {
+    console.log('Disconnected from the server');
+  });
+
+  // Add an event listener to the button
+  document.getElementById('sendUserDetails').addEventListener('click', () => {
+    // Emit the 'userDetails' event with userDetails as a JSON object
+    let userDetails = {
+      phoneNumber: '1234567890',
+      name: 'John Doe'
+    };
+    socket.emit('userDetails', userDetails);
+  });
+</script>

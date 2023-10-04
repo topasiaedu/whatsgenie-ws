@@ -3,8 +3,12 @@ const axios = require('axios');
 
 module.exports = (server) => {
   // Create a new instance of the Socket.io server
-  const io = socketIO(server, {
-    path: '/api/live-chat',
+  const io = require('socket.io')(server, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+      credentials: true
+    }
   });
 
   // Listen for a new connection
