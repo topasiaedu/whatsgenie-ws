@@ -905,7 +905,7 @@
 <!-- Add a button -->
 <script>
   // Connect to the Socket.IO server
-  const socket = io('http://ws.whatsgenie.com/api/live-chat');
+  const socket = io('https://ws.whatsgenie.com/api/live-chat');
 
   // Listen for the 'connect' event
   socket.on('connect', () => {
@@ -917,13 +917,13 @@
     console.log('Disconnected from the server');
   });
 
-  // Add an event listener to the button
-  document.getElementById('sendUserDetails').addEventListener('click', () => {
-    // Emit the 'userDetails' event with userDetails as a JSON object
-    let userDetails = {
-      phoneNumber: '1234567890',
-      name: 'John Doe'
-    };
-    socket.emit('userDetails', userDetails);
-  });
+  // // Add an event listener to the button
+  // document.getElementById('sendUserDetails').addEventListener('click', () => {
+  //   // Emit the 'userDetails' event with userDetails as a JSON object
+  //   let userDetails = {
+  //     phoneNumber: '1234567890',
+  //     name: 'John Doe'
+  //   };
+  //   socket.emit('userDetails', userDetails);
+  // });
 </script>
