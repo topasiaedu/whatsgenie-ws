@@ -51,15 +51,12 @@ module.exports = (server) => {
           console.log(`Client with id ${socket.id} did not register. Perform the action here.`);
           try {
             const payload = {
-              message: `User with id ${socket.id} disconnected without registering`,
-              sender: 'bot',
-              // Include the phone number and name in the payload
-              phoneNumber: socket.userDetails ? socket.userDetails.phoneNumber : null,
-              name: socket.userDetails ? socket.userDetails.name : null,
+              chat_id: socket.userDetails ? socket.userDetails.chat_id : null,
+              caption: socket.userDetails ? socket.userDetails.caption : null,
             };
 
             // Send a POST request to the specified URL with the payload
-            await axios.post('https://api.whatsgenie.com/send-message', payload);
+            await axios.post(`https://api.whatsgenie.com/send_message?access_token=${socket.userDetails ? socket.userDetails.access_token : ""}&instance_id=${socket.userDetails ? socket.userDetails.instance_id : ""}`, payload);
           } catch (error) {
             // If the API request fails, log the error
             console.error('API Request Error:', error);

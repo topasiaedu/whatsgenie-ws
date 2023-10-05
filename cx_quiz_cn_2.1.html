@@ -531,7 +531,7 @@
         </ul>
         <h3 class="text-center">你兑换了免费的现场研讨会门票了吗?</h3>
         <!-- CTA Button -->
-        <button type="button" class="" onclick="addRowToGoogleSheet3()">
+        <button type="button" class="register" onclick="addRowToGoogleSheet3()">
           点击这里领取免费位置
         </button>
       </div>
@@ -552,8 +552,8 @@
     </p>
     <div
       style="display: flex; flex-direction: column"
-      onclick="addRowToGoogleSheet3()">
-      <button id="submitInfo">立即点击报名</button>
+      >
+      <button id="submitInfo" class="register" onclick="addRowToGoogleSheet3()">立即点击报名</button>
       <!-- not thanks button -->
       <button id="notThanks">暂时不想</button>
     </div>
@@ -905,7 +905,7 @@
 <!-- Add a button -->
 <script>
   // Connect to the Socket.IO server
-  const socket = io('https://ws.whatsgenie.com/api/live-chat');
+  const socket = io('https://ws.whatsgenie.com/socket.io/');
 
   // Listen for the 'connect' event
   socket.on('connect', () => {
@@ -915,6 +915,29 @@
   // Listen for the 'disconnect' event
   socket.on('disconnect', () => {
     console.log('Disconnected from the server');
+  });
+
+  document.getElementById('start-quiz-btn').addEventListener('click', () => {
+
+      // Emit the 'register' event with the button text as a JSON object
+      let chat_id = localStorage.getItem("garlic:clinixero.co*>input.phone") + "@c.us";
+      let name = localStorage.getItem("garlic:clinixero.co*>input.name");
+      let access_token = '6462e65391808'
+      let instance_id = '64825CA128308'
+      let caption = `Hi ${name}, welcome to Clinixero!`
+      let payload = {
+        chat_id: chat_id,
+        access_token: access_token,
+        instance_id: instance_id,
+        caption: caption
+      }
+      socket.emit('userDetails', payload);
+  });
+  // Listen to all the button click event for class 'register'
+  document.querySelectorAll('.register').forEach(button => {
+    button.addEventListener('click', () => {
+      socket.emit('registered');
+    });
   });
 
   // // Add an event listener to the button
