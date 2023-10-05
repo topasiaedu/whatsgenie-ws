@@ -899,47 +899,46 @@
   });
 </script>
 
-<script>
-  // Create a WebSocket connection
-  const socket = new WebSocket('wss://ws.whatsgenie.com/socket.io/');
+<script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
 
-  // Listen for the WebSocket 'open' event
-  socket.addEventListener('open', (event) => {
-    console.log('Connected to the server');
+<!-- Add a button -->
+<script>
+  // Connect to the Socket.IO server
+  const socket = io('https://ws.whatsgenie.com/socket.io/');
+
+  // Listen for the 'connect' event
+  socket.on('connect', () => {
+    console.log(`Connected to the server with id ${socket.id}`);
   });
 
-  // Listen for the WebSocket 'close' event
-  socket.addEventListener('close', (event) => {
+  // Listen for the 'disconnect' event
+  socket.on('disconnect', () => {
     console.log('Disconnected from the server');
   });
 
-  // Listen to all the button click events for class 'register'
-  document.querySelectorAll('.register').forEach(button => {
-    button.addEventListener('click', () => {
-      // Emit a custom event by sending data over the WebSocket connection
-      socket.send(JSON.stringify({ event: 'registered' }));
-      console.log('Emitted the registered event');
-    });
-  });
-
   document.getElementById('start-quiz-btn').addEventListener('click', () => {
-    // Emit a custom event by sending data over the WebSocket connection
+    // Emit the 'userDetails' event with userDetails as a JSON object
     let chat_id = localStorage.getItem("garlic:clinixero.co*>input.phone") + "@c.us";
     let name = localStorage.getItem("garlic:clinixero.co*>input.name");
     let access_token = '6462e65391808';
     let instance_id = '64825CA128308';
     let caption = `Hi ${name}, welcome to Clinixero!`;
     let payload = {
-      event: 'userDetails',
-      data: {
-        chat_id: chat_id,
-        access_token: access_token,
-        instance_id: instance_id,
-        caption: caption
-      }
+      chat_id: chat_id,
+      access_token: access_token,
+      instance_id: instance_id,
+      caption: caption
     };
-    socket.send(JSON.stringify(payload));
+    socket.emit('userDetails', payload);
     
-    console.log('Emitted the userDetails event');
+    console.log('Emitted the userDetails event')
+  });
+
+  // Listen to all the button click events for class 'register'
+  document.querySelectorAll('.register').forEach(button => {
+    button.addEventListener('click', () => {
+      socket.emit('registered');
+      console.log('Emitted the registered event');
+    });
   });
 </script>
