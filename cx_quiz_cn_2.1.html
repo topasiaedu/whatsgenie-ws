@@ -667,7 +667,6 @@
       if (selectedOption) {
         selectedOptionValue = selectedOption.value;
       }
-      console.log("selectedOptionValue: ", selectedOptionValue);
       totalScore += parseInt(selectedOptionValue);
     }
     // Update the score in the HTML
@@ -750,7 +749,7 @@
       })
       .then((data) => {
         // Process the JSON data from the response
-        console.log(data); // The parsed JSON data
+        // console.log(data); // The parsed JSON data
         // You can do additional processing with the data here
       })
       .catch((error) => {
@@ -792,7 +791,7 @@
       })
       .then((data) => {
         // Process the JSON data from the response
-        console.log(data); // The parsed JSON data
+        // console.log(data); // The parsed JSON data
         // You can do additional processing with the data here
       })
       .catch((error) => {
@@ -834,7 +833,7 @@
       })
       .then((data) => {
         // Process the JSON data from the response
-        console.log(data); // The parsed JSON data
+        // console.log(data); // The parsed JSON data
         // You can do additional processing with the data here
         window.location.replace(
           "https://clinixero.co/webinar-confirmation-cnahrn6rus"
@@ -879,7 +878,7 @@
       })
       .then((data) => {
         // Process the JSON data from the response
-        console.log(data); // The parsed JSON data
+        // console.log(data); // The parsed JSON data
         // You can do additional processing with the data here
       })
       .catch((error) => {
@@ -901,7 +900,8 @@
 </script>
 
 <!-- Include the Socket.IO client library -->
-<script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script>
+
 <!-- Add a button -->
 <script>
   // Connect to the Socket.IO server
@@ -918,35 +918,25 @@
   });
 
   document.getElementById('start-quiz-btn').addEventListener('click', () => {
-
-      // Emit the 'register' event with the button text as a JSON object
-      let chat_id = localStorage.getItem("garlic:clinixero.co*>input.phone") + "@c.us";
-      let name = localStorage.getItem("garlic:clinixero.co*>input.name");
-      let access_token = '6462e65391808'
-      let instance_id = '64825CA128308'
-      let caption = `Hi ${name}, welcome to Clinixero!`
-      let payload = {
-        chat_id: chat_id,
-        access_token: access_token,
-        instance_id: instance_id,
-        caption: caption
-      }
-      socket.emit('userDetails', payload);
+    // Emit the 'userDetails' event with userDetails as a JSON object
+    let chat_id = localStorage.getItem("garlic:clinixero.co*>input.phone") + "@c.us";
+    let name = localStorage.getItem("garlic:clinixero.co*>input.name");
+    let access_token = '6462e65391808';
+    let instance_id = '64825CA128308';
+    let caption = `Hi ${name}, welcome to Clinixero!`;
+    let payload = {
+      chat_id: chat_id,
+      access_token: access_token,
+      instance_id: instance_id,
+      caption: caption
+    };
+    socket.emit('userDetails', payload);
   });
-  // Listen to all the button click event for class 'register'
+
+  // Listen to all the button click events for class 'register'
   document.querySelectorAll('.register').forEach(button => {
     button.addEventListener('click', () => {
       socket.emit('registered');
     });
   });
-
-  // // Add an event listener to the button
-  // document.getElementById('sendUserDetails').addEventListener('click', () => {
-  //   // Emit the 'userDetails' event with userDetails as a JSON object
-  //   let userDetails = {
-  //     phoneNumber: '1234567890',
-  //     name: 'John Doe'
-  //   };
-  //   socket.emit('userDetails', userDetails);
-  // });
 </script>

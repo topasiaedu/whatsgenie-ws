@@ -7,7 +7,6 @@ module.exports = (server) => {
     path: '/socket.io',
     cors: {
       origin: "*", // Allow all origins
-      methods: ["GET", "POST"]
     }
   });
   
