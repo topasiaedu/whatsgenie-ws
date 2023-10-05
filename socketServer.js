@@ -1,20 +1,14 @@
-const socketIO = require('socket.io');
+const WebSocket = require('ws');
 const axios = require('axios');
 
 module.exports = (server) => {
-  // Create a new instance of the Socket.io server
-  const io = socketIO(server, {
-    path: '/socket.io',
-    cors: {
-      origin: "*", // Allow all origins
-    }
-  });
-  
+  // Create a new instance of the WebSocket server
+  const wss = new WebSocket.Server({ server, path: '/socket.io' });
 
   // Listen for a new connection
-  io.on('connection', (socket) => {
+  wss.on('connection', (socket) => {
     // Log the unique ID of the new client
-    console.log(`New client connected with id ${socket.id}`);
+    console.log(`New client connected with id ${socket._socket.remoteAddress}:${socket._socket.remotePort}`);
 
     // Initialize the hasRegistered property for the new client
     socket.hasRegistered = false;
@@ -22,32 +16,43 @@ module.exports = (server) => {
     // Initialize the userDetails property for the new client
     socket.userDetails = null;
 
-    // Listen for the 'registered' event
-    socket.on('registered', () => {
-      // Log the unique ID of the registered client
-      console.log(`Client with id ${socket.id} is registered.`);
+    // Listen for messages from the client
+    socket.on('message', (message) => {
+      const data = JSON.parse(message);
 
-      // Set the hasRegistered property to true when the client registers
-      socket.hasRegistered = true;
+      // Handle different types of messages
+      switch (data.event) {
+        case 'registered':
+          // Log the unique ID of the registered client
+          console.log(`Client with id ${socket._socket.remoteAddress}:${socket._socket.remotePort} is registered.`);
+
+          // Set the hasRegistered property to true when the client registers
+          socket.hasRegistered = true;
+          break;
+
+        case 'userDetails':
+          // Store the userDetails on the socket
+          // userDetails should be an object with phoneNumber and name properties
+          socket.userDetails = data.payload;
+          break;
+
+        default:
+          // Handle unrecognized events
+          console.log(`Received unrecognized event from client with id ${socket._socket.remoteAddress}:${socket._socket.remotePort}`);
+          break;
+      }
     });
 
-    // Listen for the 'userDetails' event
-    socket.on('userDetails', (userDetails) => {
-      // Store the userDetails on the socket
-      // userDetails should be an object with phoneNumber and name properties
-      socket.userDetails = userDetails;
-    });
-
-    // Listen for the 'disconnect' event
-    socket.on('disconnect', () => {
+    // Listen for the 'close' event
+    socket.on('close', () => {
       // Log the unique ID of the disconnected client
-      console.log(`Client with id ${socket.id} disconnected`);
+      console.log(`Client with id ${socket._socket.remoteAddress}:${socket._socket.remotePort} disconnected`);
 
       // After a delay, check if the client has registered
       setTimeout(async () => {
         if (!socket.hasRegistered) {
           // If the client did not register, log their unique ID and send an API request
-          console.log(`Client with id ${socket.id} did not register. Perform the action here.`);
+          console.log(`Client with id ${socket._socket.remoteAddress}:${socket._socket.remotePort} did not register. Perform the action here.`);
           try {
             const payload = {
               chat_id: socket.userDetails ? socket.userDetails.chat_id : null,
