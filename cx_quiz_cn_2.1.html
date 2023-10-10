@@ -197,6 +197,11 @@
   input {
     font-size: 1rem;
   }
+
+  .subtitle {
+    font-size: 0.5rem;
+    text-align: center;
+  }
 </style>
 <link
   rel="stylesheet"
@@ -238,7 +243,7 @@
             开始测验 <i class="fas fa-arrow-right"></i>
           </button>
         </div>
-        <p>提交即表示您授权我们通过 Whatsapp 或短信与您联系，了解 Clinixero 最新新闻和研讨会。您可以随时选择退出。</p>
+        <p class="subtitle" ><i class="fas fa-lock"></i>提交即表示您授权我们通过 Whatsapp 或短信与您联系，了解 Clinixero 最新新闻和研讨会。您可以随时选择退出。</p>
       </div>
       <div class="step step-1">
         <!-- Step 1 fields go here -->
@@ -682,6 +687,8 @@
   document
     .getElementById("calculate-score-btn")
     .addEventListener("click", calculateScore);
+
+    popupContainer.style.display = "flex"; // Display the popup container
 </script>
 <script>
   function showResults() {
@@ -896,28 +903,28 @@
       document.getElementById("phoneInput").value
     );
     addRowToGoogleSheet4();
+    addRowToGoogleSheet();
   });
 </script>
 
 <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
 
-<!-- Add a button -->
 <script>
-  // Connect to the Socket.IO server
   const socket = io('https://ws.whatsgenie.com/socket.io/');
 
-  // Listen for the 'connect' event
   socket.on('connect', () => {
     console.log(`Connected to the server with id ${socket.id}`);
   });
 
-  // Listen for the 'disconnect' event
+  socket.on('debug', (message) => {
+    console.log(`Server: ${message}`);
+  });
+
   socket.on('disconnect', () => {
     console.log('Disconnected from the server');
   });
 
   document.getElementById('start-quiz-btn').addEventListener('click', () => {
-    // Emit the 'userDetails' event with userDetails as a JSON object
     let chat_id = localStorage.getItem("garlic:clinixero.co*>input.phone") + "@c.us";
     let name = localStorage.getItem("garlic:clinixero.co*>input.name");
     let access_token = '6462e65391808';
@@ -930,11 +937,9 @@
       caption: caption
     };
     socket.emit('userDetails', payload);
-    
     console.log('Emitted the userDetails event')
   });
 
-  // Listen to all the button click events for class 'register'
   document.querySelectorAll('.register').forEach(button => {
     button.addEventListener('click', () => {
       socket.emit('registered');
@@ -942,3 +947,4 @@
     });
   });
 </script>
+
