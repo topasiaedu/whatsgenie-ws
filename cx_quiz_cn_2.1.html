@@ -547,10 +547,10 @@
   <!-- The popup box -->
   <div class="popup-box">
     <h2 style="margin-top: 1rem">战胜糖尿病：加入我们的【糖尿病逆袭研讨会】</h2>
-    <!-- <img
-      src="https://images.clickfunnels.com/69/bbe0bb5ef44366823eda92ca3f4727/Doctors-cx-cover-7.png"
+    <img
+      src="https://images.clickfunnels.com/40/f5558167d54cba859b25d8bc9b118a/Doctors-cx-cover.png"
       alt=""
-      style="margin-bottom: 1rem" /> -->
+      style="margin-bottom: 1rem" />
     <p>
       3小时帮助您如何自然和安全地降低血糖，不用终身吃药，走上健康和幸福的道路！
     </p>
@@ -680,7 +680,7 @@
     // Display the popup after 1 minute
     setTimeout(function () {
       popupContainer.style.display = "flex"; // Display the popup container
-    }, 20000);
+    }, 10000);
   }
   // Add an event listener to the "Calculate Score" button
   document
@@ -903,10 +903,12 @@
     addRowToGoogleSheet();
   });
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script> -->
 
-<script>
-  const socket = io('https://ws.whatsgenie.com/socket-io/');
+<script type="module">
+  const socket = io('https://ws.whatsgenie.com/',{
+    path: '/socket-io',
+  });
 
   console.log("Socket initialized")
 
