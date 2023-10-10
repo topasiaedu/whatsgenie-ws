@@ -3,7 +3,7 @@ const axios = require('axios');
 
 module.exports = (server) => {
   const io = socketIO(server, {
-    path: '/socket.io',
+    path: '/socket-io',
     cors: {
       origin: "*",
     }

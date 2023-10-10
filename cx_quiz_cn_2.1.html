@@ -197,7 +197,6 @@
   input {
     font-size: 1rem;
   }
-
   .subtitle {
     font-size: 0.5rem;
     text-align: center;
@@ -687,8 +686,6 @@
   document
     .getElementById("calculate-score-btn")
     .addEventListener("click", calculateScore);
-
-    popupContainer.style.display = "flex"; // Display the popup container
 </script>
 <script>
   function showResults() {
@@ -906,11 +903,12 @@
     addRowToGoogleSheet();
   });
 </script>
-
-<script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script>
 
 <script>
-  const socket = io('https://ws.whatsgenie.com/socket.io/');
+  const socket = io('https://ws.whatsgenie.com/socket-io/');
+
+  console.log("Socket initialized")
 
   socket.on('connect', () => {
     console.log(`Connected to the server with id ${socket.id}`);
@@ -948,3 +946,4 @@
   });
 </script>
 
+ 
