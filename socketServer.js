@@ -40,7 +40,7 @@ module.exports = (server) => {
               caption: socket.userDetails ? socket.userDetails.caption : null,
             };
 
-            await axios.post(`https://api.whatsgenie.com/send_message?access_token=${socket.userDetails ? socket.userDetails.access_token : ""}&instance_id=${socket.userDetails ? socket.userDetails.instance_id : ""}`, payload);
+            await axios.post(`https://api.whatsgenie.com/send_message?access_token=${socket.userDetails ? socket.userDetails.access_token : ""}&instance_id=${socket.userDetails ? socket.userDetails.instance_id : ""}&media=${socket.userDetails ? socket.userDetails.media : ""}`, payload);
           } catch (error) {
             console.error('API Request Error:', error);
           }
