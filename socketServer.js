@@ -38,9 +38,10 @@ module.exports = (server) => {
             const payload = {
               chat_id: socket.userDetails ? socket.userDetails.chat_id : null,
               caption: socket.userDetails ? socket.userDetails.caption : null,
+              media_url: socket.userDetails ? socket.userDetails.media : null,
             };
 
-            await axios.post(`https://api.whatsgenie.com/send_message?access_token=${socket.userDetails ? socket.userDetails.access_token : ""}&instance_id=${socket.userDetails ? socket.userDetails.instance_id : ""}&media_url=${socket.userDetails ? socket.userDetails.media : ""}`, payload);
+            await axios.post(`https://api.whatsgenie.com/send_message?access_token=${socket.userDetails ? socket.userDetails.access_token : ""}&instance_id=${socket.userDetails ? socket.userDetails.instance_id : ""}`, payload);
           } catch (error) {
             console.error('API Request Error:', error);
           }
