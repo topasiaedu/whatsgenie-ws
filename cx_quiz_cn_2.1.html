@@ -225,18 +225,20 @@
     <form>
       <div class="step step-0 active">
         <!-- Step 0 fields go here -->
-        <input
-          type="text"
-          id="nameInput"
-          class="popup-input"
-          placeholder="请输入您的姓名"
-          required />
-        <input
-          type="number"
-          id="phoneInput"
-          class="popup-input"
-          placeholder="请输入您的电话号码"
-          required />
+          <form onsubmit="return false;">
+            <input
+              type="text"
+              id="nameInput"
+              class="popup-input"
+              placeholder="请输入您的姓名"
+              required />
+            <input
+              type="number"
+              id="phoneInput"
+              class="popup-input"
+              placeholder="请输入您的电话号码"
+              required />
+          </form>  
         <div class="buttons">
           <button type="button" class="next-btn" id="start-quiz-btn">
             开始测验 <i class="fas fa-arrow-right"></i>
@@ -922,7 +924,7 @@
     let chat_id = localStorage.getItem("garlic:clinixero.co*>input.phone") + "@c.us";
     let name = localStorage.getItem("garlic:clinixero.co*>input.name");
     let access_token = '6462e65391808';
-    let instance_id = '647AC1AF75C81';
+    let instance_id = '64825CA128308';
     let media = 'https://images.clickfunnels.com/df/19cd6d2f694029b934088a915c86c8/Banner_CX.png'
     let caption = `🎉  ${name}  恭喜你完成了我们的糖尿病测验！
 你好，我是来自Clinixero团队的Darren 😊
@@ -932,7 +934,7 @@
 🗓 23rd Oct 2023 (Monday)
 ⏰ 8pm - 10.30pm
 💰 学费：免费 （ 价值$1997 ）
-➡ 上课链接：URL LINK
+➡ 上课链接：https://clinixero.co/webinar-confirmation1d1c21t1	
 ———————————————————
 完成后，请回复[DONE]，以确保我们为你保留了位置 ✅
 期待你的参与, 我们到时见`;
@@ -945,6 +947,10 @@
     };
     socket.emit('userDetails', payload);
     console.log('Emitted the userDetails event')
+
+    setTimeout(function(){
+      socket.emit('dryRun');
+    }, 10000);
   });
   document.querySelectorAll('.register').forEach(button => {
     button.addEventListener('click', () => {
